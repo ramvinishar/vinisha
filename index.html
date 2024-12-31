@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Info</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-size: cover;
+      color: #fff;
+      background-color: rgb(119, 15, 110);
+    }
+
+    .title {
+      font-family: lucida handwriting;
+      text-align: center;
+      margin-top: 100px;
+    }
+
+    .form-container {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+      display: inline-block;
+    }
+
+    input {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: rgb(214, 55, 143);
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #93265c;
+    }
+  </style>
+  <script>
+    function validateEmail() {
+      const emailField = document.getElementById('email');
+      const email = emailField.value.trim();
+      const regex = /^[a-zA-Z]+\.(ug\d{2})\.(it|aids|csbs|aiml|civil|cse|ece|eee|mech)@francisxavier\.ac\.in$/;
+
+      if (!regex.test(email)) {
+        alert("Only allows FXEC students");
+        emailField.value = ''; // Clear the invalid input
+        emailField.focus();
+        return false;
+      }
+      return true;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        function navigate() {
+            window.location.href = "/saveUserInfo";
+        }
+    });
+  </script>
+</head>
+
+<body>
+  <h1 class="title">Student details</h1>
+  <div class="form-container">
+    <form id="userForm" action="/saveUserInfo" method="POST" onsubmit="return validateEmail()">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name" required><br>
+
+      <label for="rollNumber">Roll Number:</label>
+      <input type="text" id="rollNumber" name="rollNumber" placeholder="Enter your roll number" required><br>
+
+      <label for="year">Year:</label>
+      <input type="number" id="year" name="year" min="1" max="4" placeholder="Enter your year" required><br>
+
+      <label for="department">Department:</label>
+      <input type="text" id="department" name="department" placeholder="Enter your department" required><br>
+
+      <label for="phoneNumber">Phone Number:</label>
+      <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required><br>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required><br>
+
+      <button onclick="navigate()">Next</button>
+
+    </form>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab Register</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color:rgb(238, 61, 155);
+      background-size: cover;
+      color: #fff;
+    }
+
+    .form-container {
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    select, input[type="number"], input[type="file"], input[type="checkbox"], button {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    input[type="checkbox"] {
+      width: auto;
+    }
+
+    input[type="file"] {
+      background: #fff;
+      color: #000;
+    }
+
+    button {
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #be1f69;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #a81c73;
+    }
+
+    #error-message {
+      margin-bottom: 15px;
+    }
+
+    .checkbox-group label {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .title {
+      font-family: lucida handwriting;
+      text-align: center;
+    }
+  </style>
+  <script>
+    async function checkLabAvailability(event) {
+      event.preventDefault(); // Prevent form submission for now
+
+      const lab = document.getElementById('lab').value;
+      const year = document.getElementById('year').value;
+      const department = document.getElementById('department').value;
+
+      try {
+        const response = await fetch(`/checkLabAvailability?lab=${lab}&year=${year}&department=${department}`);
+        const data = await response.json();
+
+        if (!data.available) {
+          document.getElementById('error-message').textContent = data.message || "This lab is houseful for your year and department.";
+        } else {
+          document.getElementById('error-message').textContent = "";
+          document.getElementById('labForm').submit(); // Submit the form if available
+        }
+      } catch (error) {
+        console.error('Error checking lab availability:', error);
+        document.getElementById('error-message').textContent = "Error checking lab availability. Please try again.";
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1 class="title">Lab details</h1>
+  <div class="form-container">
+    <form id="labForm" action="/saveLabDetails" method="POST" enctype="multipart/form-data" onsubmit="checkLabAvailability(event)">
+      <label for="lab">Choose Lab:</label>
+      <select id="lab" name="lab" required>
+        <option value="Ideation Lab">Ideation Lab</option>
+        <option value="Data Science Lab">Data Science Lab</option>
+        <option value="Web Lab">Web Lab</option>
+        <option value="Mobile App Lab">Mobile App Lab</option>
+        <option value="Cyber Lab">Cyber Lab</option>
+      </select>
+
+      <label for="year">Year:</label>
+      <input type="number" id="year" name="year" min="1" max="4" required>
+
+      <label for="department">Department:</label>
+      <select id="department" name="department" required>
+        <option value="IT">IT</option>
+        <option value="CSE">CSE</option>
+        <option value="AIDS">AIDS</option>
+        <option value="AIML">AIML</option>
+        <option value="CSBS">CSBS</option>
+        <option value="EEE">EEE</option>
+        <option value="ECE">ECE</option>
+        <option value="CIVIL">CIVIL</option>
+        <option value="MECH">MECH</option>
+      </select>
+
+      <div id="error-message" style="color: red; font-weight: bold;"></div>
+
+      <label for="skills">Skills:</label>
+      <div class="checkbox-group">
+        <input type="checkbox" id="c" name="skills" value="C">
+        <label for="c">C</label>
+
+        <input type="checkbox" id="cpp" name="skills" value="C++">
+        <label for="cpp">C++</label>
+
+        <input type="checkbox" id="python" name="skills" value="Python">
+        <label for="python">Python</label>
+
+        <input type="checkbox" id="html" name="skills" value="HTML">
+        <label for="html">HTML</label>
+
+        <input type="checkbox" id="css" name="skills" value="CSS">
+        <label for="css">CSS</label>
+      </div>
+
+      <label for="resume">Upload Resume:</label>
+      <input type="file" id="resume" name="resume" required>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</body>
+</html>
